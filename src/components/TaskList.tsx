@@ -15,15 +15,60 @@ export function TaskList() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   function handleCreateNewTask() {
-    // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
+    let randomNumber = Math.floor(Math.random() * 100);
+
+    /* Loop com a variavel newNumber para sempre pecorrer
+       todos os id da task apos gerar um numero novo(se o numero
+       ja existir)
+    */
+    let newNumber = false
+    while (!newNumber) {
+      newNumber = true
+      tasks.map(task => {
+        if(task.id == randomNumber){
+          randomNumber = Math.floor(Math.random() * 100);
+          newNumber = false
+        }
+  
+        return randomNumber;
+      })
+    }
+
+    if(newTaskTitle == ""){
+      alert("Error: Não é possivel adicionar Task sem título")
+    } else {
+      setTasks([...tasks, {
+        id: randomNumber,
+        title: newTaskTitle,
+        isComplete: false,
+      }]);
+  
+    }
+
+    
   }
 
   function handleToggleTaskCompletion(id: number) {
-    // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
+    tasks.map(task => {
+      if(task.id == id && task.isComplete == false){
+        task.isComplete = true;
+        setTasks([...tasks])
+      }
+      else if(task.id == id && task.isComplete == true) {
+        task.isComplete = false;
+        setTasks([...tasks])
+      } 
+    })
   }
 
   function handleRemoveTask(id: number) {
-    // Remova uma task da listagem pelo ID
+    tasks.map(task => {
+      if(task.id == id) {
+        let index = tasks.indexOf(task)
+        tasks.splice(index, 1)
+        setTasks([...tasks])
+      }
+    })
   }
 
   return (
